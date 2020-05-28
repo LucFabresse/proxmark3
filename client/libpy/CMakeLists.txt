@@ -1,11 +1,6 @@
 # version
 cmake_minimum_required(VERSION 3.4.1)
 
-add_definitions(-DHAVE_STDINT_H)
-
-# Root path into client
-set(PM3_ROOT ../../)
-
 find_package(PkgConfig)
 pkg_search_module(PYTHON3 QUIET python3)
 pkg_search_module(PYTHON3EMBED QUIET python3-embed)
@@ -22,21 +17,8 @@ elseif (PYTHON3_FOUND)
     set(ADDITIONAL_LNKDIRS ${PYTHON3_LIBRARY_DIRS} ${ADDITIONAL_LNKDIRS})
 endif (PYTHON3EMBED_FOUND)
 
-# client resources
-add_library(_libpm3 SHARED
-        libpm3_wrap.c
-        )
-
-# includes
-target_include_directories(_libpm3 PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${PM3_ROOT}/include/
-        ${PM3_ROOT}/common
-        ${PM3_ROOT}/common_fpga
-        ${PM3_ROOT}/client/src
-        ${ADDITIONAL_DIRS}
-)
-
+add_library(_libpm3 SHARED libpm3_wrap.c)
+target_include_directories(_libpm3 PRIVATE ${ADDITIONAL_DIRS})
 target_compile_options(_libpm3 PUBLIC -Wall -Werror -O3)
 target_link_libraries(_libpm3 PRIVATE pm3rrg_rdv4)
 target_link_directories(_libpm3 PRIVATE ../lib/build)

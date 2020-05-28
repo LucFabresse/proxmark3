@@ -1,8 +1,6 @@
 # version
 cmake_minimum_required(VERSION 3.4.1)
 
-add_definitions(-DHAVE_STDINT_H)
-
 # Root path into client
 set(PM3_ROOT ../../)
 
