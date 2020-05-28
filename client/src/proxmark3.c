@@ -32,6 +32,7 @@
 // Used to enable/disable use of preferences json file
 #define USE_PREFERENCE_FILE
 
+#ifndef LIBPM3
 #define BANNERMSG1 "    :snowflake:  iceman@icesql.net"
 #define BANNERMSG2 "   https://github.com/rfidresearchgroup/proxmark3/"
 #define BANNERMSG3 " bleeding edge :coffee:"
@@ -385,6 +386,7 @@ static void dumpAllHelp(int markdown) {
     dumpCommandsRecursive(cmds, markdown);
     session.help_dump_mode = false;
 }
+#endif
 
 static char *my_executable_path = NULL;
 static char *my_executable_directory = NULL;
@@ -470,6 +472,7 @@ static void set_my_user_directory(void) {
     }
 }
 
+#ifndef LIBPM3
 static void show_help(bool showFullHelp, char *exec_name) {
 
     PrintAndLogEx(NORMAL, "\nsyntax: %s [-h|-t|-m]", exec_name);
@@ -605,6 +608,7 @@ finish2:
     PrintAndLogEx(NORMAL, "\nHave a nice day!");
     return ret;
 }
+#endif
 
 #ifndef USE_PREFERENCE_FILE
 
@@ -665,11 +669,51 @@ static bool DetectWindowsAnsiSupport(void) {
 
 #endif
 
-int main(int argc, char *argv[]) {
+void init(void) {
     srand(time(0));
 
     session.pm3_present = false;
     session.help_dump_mode = false;
+    session.supports_colors = false;
+    session.emoji_mode = ALTTEXT;
+    session.stdinOnTTY = false;
+    session.stdoutOnTTY = false;
+
+    // set global variables soon enough to get the log path
+    set_my_executable_path();
+    set_my_user_directory();
+
+}
+
+void mainlib_open(void) {
+
+    char *port = "/dev/ttyACM0";
+    OpenProxmark(port, false, 20, false, USART_BAUD_RATE);
+    if (session.pm3_present && (TestProxmark() != PM3_SUCCESS)) {
+        PrintAndLogEx(ERR, _RED_("ERROR:") " cannot communicate with the Proxmark\n");
+        CloseProxmark();
+    }
+
+    if ((port != NULL) && (!session.pm3_present))
+        exit(EXIT_FAILURE);
+
+    if (!session.pm3_present)
+        PrintAndLogEx(INFO, "Running in " _YELLOW_("OFFLINE") " mode");
+}
+
+void mainlib_close(void) {
+    // Clean up the port
+    if (session.pm3_present) {
+        clearCommandBuffer();
+        SendCommandNG(CMD_QUIT_SESSION, NULL, 0);
+        msleep(100); // Make sure command is sent before killing client
+        CloseProxmark();
+    }
+}
+
+#ifndef LIBPM3
+int main(int argc, char *argv[]) {
+    init();
     bool waitCOMPort = false;
     bool addLuaExec = false;
     bool stayInCommandLoop = false;
@@ -700,10 +744,6 @@ int main(int argc, char *argv[]) {
     bool debug_mode_forced = false;
     int flash_num_files = 0;
     char *flash_filenames[FLASH_MAX_FILES];
-
-    // set global variables soon enough to get the log path
-    set_my_executable_path();
-    set_my_user_directory();
 
     for (int i = 1; i < argc; i++) {
 
@@ -1039,3 +1079,4 @@ int main(int argc, char *argv[]) {
 #endif
     exit(EXIT_SUCCESS);
 }
+#endif

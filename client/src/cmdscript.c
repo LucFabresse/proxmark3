@@ -146,6 +146,7 @@ static int CmdScriptList(const char *Cmd) {
 #endif
 }
 
+#ifndef LIBPM3
 /**
  * @brief CmdScriptRun - executes a script file.
  * @param argc
@@ -345,11 +346,14 @@ static int CmdScriptRun(const char *Cmd) {
     free(script_path);
     return ret;
 }
+#endif
 
 static command_t CommandTable[] = {
     {"help",  CmdHelp,          AlwaysAvailable, "Usage info"},
     {"list",  CmdScriptList,    AlwaysAvailable, "List available scripts"},
+#ifndef LIBPM3
     {"run",   CmdScriptRun,     AlwaysAvailable, "<name> -- execute a script"},
+#endif
     {NULL, NULL, NULL, NULL}
 };
 
