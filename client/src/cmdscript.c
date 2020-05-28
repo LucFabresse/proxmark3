@@ -21,6 +21,10 @@
 #endif
 #endif
 
+#ifdef HAVE_LUA_SWIG
+#include "libpm3_wrap.c"
+#endif
+
 
 #include "cmdparser.h"    // command_t
 #include "scripting.h"
@@ -212,6 +216,7 @@ static int CmdScriptRun(const char *Cmd) {
 
         //Add the 'bit' library
         set_bit_library(lua_state);
+        luaL_requiref(lua_state, "libpm3", luaopen_libpm3, 1);
 
         error = luaL_loadfile(lua_state, script_path);
         free(script_path);
