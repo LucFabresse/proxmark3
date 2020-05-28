@@ -9,7 +9,6 @@
 //-----------------------------------------------------------------------------
 // 2020, added Python support (@iceman100)
 
-
 #include <stdlib.h>
 #include <string.h>
 
@@ -17,6 +16,9 @@
 //#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <wchar.h>
+#ifdef HAVE_PYTHON_SWIG
+#include "libpm3_wrap.c"
+#endif
 #endif
 
 
@@ -291,6 +293,10 @@ static int CmdScriptRun(const char *Cmd) {
 
         // optional but recommended
         Py_SetProgramName(program);
+#ifdef HAVE_PYTHON_SWIG
+        // hook Proxmark3 API
+        PyImport_AppendInittab("_libpm3", PyInit__libpm3);
+#endif
         Py_Initialize();
 
         //int argc, char ** argv
