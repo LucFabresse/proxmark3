@@ -12,20 +12,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef HAVE_PYTHON
-//#define PY_SSIZE_T_CLEAN
-#include <Python.h>
-#include <wchar.h>
-#ifdef HAVE_PYTHON_SWIG
-#include "libpm3_wrap.c"
-#endif
-#endif
-
-#ifdef HAVE_LUA_SWIG
-#include "libpm3_wrap.c"
-#endif
-
-
 #include "cmdparser.h"    // command_t
 #include "scripting.h"
 #include "comms.h"
@@ -38,6 +24,19 @@
 #include "proxmark3.h"
 #include "ui.h"
 #include "fileutils.h"
+
+#ifdef HAVE_LUA_SWIG
+extern int luaopen_libpm3(lua_State* L);
+#endif
+
+#ifdef HAVE_PYTHON
+//#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+#include <wchar.h>
+#ifdef HAVE_PYTHON_SWIG
+extern PyObject* PyInit__libpm3(void);
+#endif
+#endif
 
 typedef enum {
     PM3_UNSPECIFIED,
@@ -216,8 +215,9 @@ static int CmdScriptRun(const char *Cmd) {
 
         //Add the 'bit' library
         set_bit_library(lua_state);
+#ifdef HAVE_LUA_SWIG
         luaL_requiref(lua_state, "libpm3", luaopen_libpm3, 1);
-
+#endif
         error = luaL_loadfile(lua_state, script_path);
         free(script_path);
         if (!error) {
