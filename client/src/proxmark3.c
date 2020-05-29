@@ -687,7 +687,8 @@ static void init(void) {
 
 void mainlib_open(void) {
 
-    char port[20];
+    char portb[20];
+    char *port = portb;
     strcpy(port, "/dev/ttyACM0");
     init();
     OpenProxmark(port, false, 20, false, USART_BAUD_RATE);
