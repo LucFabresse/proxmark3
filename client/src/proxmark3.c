@@ -669,7 +669,7 @@ static bool DetectWindowsAnsiSupport(void) {
 
 #endif
 
-void init(void) {
+static void init(void) {
     srand(time(0));
 
     session.pm3_present = false;
@@ -687,7 +687,9 @@ void init(void) {
 
 void mainlib_open(void) {
 
-    char *port = "/dev/ttyACM0";
+    char port[20];
+    strcpy(port, "/dev/ttyACM0");
+    init();
     OpenProxmark(port, false, 20, false, USART_BAUD_RATE);
     if (session.pm3_present && (TestProxmark() != PM3_SUCCESS)) {
         PrintAndLogEx(ERR, _RED_("ERROR:") " cannot communicate with the Proxmark\n");

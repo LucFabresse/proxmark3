@@ -50,7 +50,8 @@ const char *get_my_executable_path(void);
 const char *get_my_executable_directory(void);
 const char *get_my_user_directory(void);
 void main_loop(char *script_cmds_file, char *script_cmd, bool stayInCommandLoop);
-void mainlib(void);
+void mainlib_open(void);
+void mainlib_close(void);
 
 #ifdef __cplusplus
 }

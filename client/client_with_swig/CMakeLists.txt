@@ -185,8 +185,8 @@ set (TARGET_SOURCES
         ${PM3_ROOT}/client/src/wiegand_formats.c
         ${PM3_ROOT}/client/src/wiegand_formatutils.c
         ${CMAKE_BINARY_DIR}/version.c
-        libpm3_luawrap.c
-        libpm3_pywrap.c
+        ${PM3_ROOT}/client/src/libpm3_luawrap.c
+        ${PM3_ROOT}/client/src/libpm3_pywrap.c
         )
 
 add_custom_command(
@@ -273,7 +273,7 @@ target_include_directories(proxmark3 PRIVATE
         ../../common_fpga
         ../../include
         ../src
-        .
+        ../include
         ../client_with_py
         ${ADDITIONAL_DIRS}
 )

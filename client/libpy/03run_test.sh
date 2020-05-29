@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./test.py
+PYTHONPATH=../src ./test.py
