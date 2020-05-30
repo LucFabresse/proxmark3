@@ -246,6 +246,7 @@ if (EXISTS ${PM3_ROOT}/client/src/libpm3_luawrap.c)
             ${PM3_ROOT}/client/src/libpm3_luawrap.c
             ${TARGET_SOURCES})
     add_definitions(-DHAVE_LUA_SWIG)
+    message("Lua SWIG wrapper found")
 endif (EXISTS ${PM3_ROOT}/client/src/libpm3_luawrap.c)
 
 # Python SWIG
@@ -255,6 +256,7 @@ if (PYTHON3EMBED_FOUND OR PYTHON3_FOUND)
                 ${PM3_ROOT}/client/src/libpm3_pywrap.c
                 ${TARGET_SOURCES})
         add_definitions(-DHAVE_PYTHON_SWIG)
+        message("Python SWIG wrapper found")
     endif (EXISTS ${PM3_ROOT}/client/src/libpm3_pywrap.c)
 endif (PYTHON3EMBED_FOUND OR PYTHON3_FOUND)
 
