@@ -2697,9 +2697,12 @@ extern "C" {
 #endif
 static int _wrap_open(lua_State* L) {
   int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
   
-  SWIG_check_num_args("pm3_open",0,0)
-  pm3_open();
+  SWIG_check_num_args("pm3_open",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("pm3_open",1,"char *");
+  arg1 = (char *)lua_tostring(L, 1);
+  pm3_open(arg1);
   
   return SWIG_arg;
   

@@ -13,7 +13,7 @@
 /* Parse the header file to generate wrappers */
 #endif
 
-void pm3_open(void);
-int pm3_console(char *Cmd);
+void pm3_open(char *port);
+int pm3_console(char *cmd);
 void pm3_close(void);
 #endif

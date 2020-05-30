@@ -51,9 +51,9 @@ const char *get_my_executable_directory(void);
 const char *get_my_user_directory(void);
 void main_loop(char *script_cmds_file, char *script_cmd, bool stayInCommandLoop);
 
-void pm3_open(void);
+void pm3_open(char *port);
 void pm3_close(void);
-int pm3_console(char *Cmd);
+int pm3_console(char *cmd);
 
 #ifdef __cplusplus
 }

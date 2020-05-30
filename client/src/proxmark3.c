@@ -687,11 +687,7 @@ static void init(void) {
 
 }
 
-void pm3_open(void) {
-
-    char portb[20];
-    char *port = portb;
-    strcpy(port, "/dev/ttyACM0");
+void pm3_open(char *port) {
     init();
     OpenProxmark(port, false, 20, false, USART_BAUD_RATE);
     if (session.pm3_present && (TestProxmark() != PM3_SUCCESS)) {

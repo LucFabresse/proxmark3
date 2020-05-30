@@ -2804,12 +2804,25 @@ extern "C" {
 #endif
 SWIGINTERN PyObject *_wrap_open(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
+  char *arg1 = (char *) 0 ;
+  int res1 ;
+  char *buf1 = 0 ;
+  int alloc1 = 0 ;
+  PyObject *swig_obj[1] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "open", 0, 0, 0)) SWIG_fail;
-  pm3_open();
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_AsCharPtrAndSize(swig_obj[0], &buf1, NULL, &alloc1);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "open" "', argument " "1"" of type '" "char *""'");
+  }
+  arg1 = (char *)(buf1);
+  pm3_open(arg1);
   resultobj = SWIG_Py_Void();
+  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
   return resultobj;
 fail:
+  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
   return NULL;
 }
 
@@ -2854,7 +2867,7 @@ fail:
 
 static PyMethodDef SwigMethods[] = {
 	 { "SWIG_PyInstanceMethod_New", SWIG_PyInstanceMethod_New, METH_O, NULL},
-	 { "open", _wrap_open, METH_NOARGS, NULL},
+	 { "open", _wrap_open, METH_O, NULL},
 	 { "console", _wrap_console, METH_O, NULL},
 	 { "close", _wrap_close, METH_NOARGS, NULL},
 	 { NULL, NULL, 0, NULL }
