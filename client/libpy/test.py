@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import libpm3
+import pm3
 
-libpm3.mainlib_open()
-libpm3.CommandReceived("hw status")
-libpm3.mainlib_close()
+pm3.mainlib_open()
+pm3.CommandReceived("hw status")
+pm3.mainlib_close()

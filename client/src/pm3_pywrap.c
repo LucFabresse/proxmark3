@@ -2647,16 +2647,16 @@ static swig_module_info swig_module = {swig_types, 1, 0, 0, 0, 0};
 #define SWIG_TypeQuery SWIG_Python_TypeQuery
 
 /*-----------------------------------------------
-              @(target):= _libpm3.so
+              @(target):= _pm3.so
   ------------------------------------------------*/
 #if PY_VERSION_HEX >= 0x03000000
-#  define SWIG_init    PyInit__libpm3
+#  define SWIG_init    PyInit__pm3
 
 #else
-#  define SWIG_init    init_libpm3
+#  define SWIG_init    init_pm3
 
 #endif
-#define SWIG_name    "_libpm3"
+#define SWIG_name    "_pm3"
 
 #define SWIGVERSION 0x040001 
 #define SWIG_VERSION SWIGVERSION
@@ -2667,7 +2667,7 @@ static swig_module_info swig_module = {swig_types, 1, 0, 0, 0, 0};
 
 
 /* Includes the header in the wrapper code */
-#include "libpm3.h"
+#include "pm3.h"
 
 
 SWIGINTERN swig_type_info*

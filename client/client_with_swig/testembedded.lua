@@ -1,2 +1,2 @@
-local libpm3 = require("libpm3")
-libpm3.CommandReceived("hw status")
+local pm3 = require("pm3")
+pm3.CommandReceived("hw status")

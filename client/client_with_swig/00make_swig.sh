@@ -1,4 +1,4 @@
 #!/bin/bash
 
-swig -lua -o ../src/libpm3_luawrap.c ../include/libpm3.i
-swig -python -o ../src/libpm3_pywrap.c ../include/libpm3.i
+swig -lua -o ../src/pm3_luawrap.c ../include/pm3.i
+swig -python -o ../src/pm3_pywrap.c ../include/pm3.i

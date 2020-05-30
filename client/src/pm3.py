@@ -10,9 +10,9 @@ if _swig_python_version_info < (2, 7, 0):
 
 # Import the low-level C/C++ module
 if __package__ or "." in __name__:
-    from . import _libpm3
+    from . import _pm3
 else:
-    import _libpm3
+    import _pm3
 
 try:
     import builtins as __builtin__
@@ -63,12 +63,12 @@ class _SwigNonDynamicMeta(type):
 
 
 def mainlib_open():
-    return _libpm3.mainlib_open()
+    return _pm3.mainlib_open()
 
 def CommandReceived(cmd):
-    return _libpm3.CommandReceived(cmd)
+    return _pm3.CommandReceived(cmd)
 
 def mainlib_close():
-    return _libpm3.mainlib_close()
+    return _pm3.mainlib_close()
 
 

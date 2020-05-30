@@ -2675,14 +2675,14 @@ static swig_module_info swig_module = {swig_types, 0, 0, 0, 0, 0};
 
 /* -------- TYPES TABLE (END) -------- */
 
-#define SWIG_name      "libpm3"
-#define SWIG_init      luaopen_libpm3
-#define SWIG_init_user luaopen_libpm3_user
+#define SWIG_name      "pm3"
+#define SWIG_init      luaopen_pm3
+#define SWIG_init_user luaopen_pm3_user
 
-#define SWIG_LUACODE   luaopen_libpm3_luacode
+#define SWIG_LUACODE   luaopen_pm3_luacode
 
 /* Includes the header in the wrapper code */
-#include "libpm3.h"
+#include "pm3.h"
 
 
 SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
@@ -2767,7 +2767,7 @@ static swig_lua_namespace* swig_SwigModule_namespaces[] = {
 };
 
 static swig_lua_namespace swig_SwigModule = {
-    "libpm3",
+    "pm3",
     swig_SwigModule_methods,
     swig_SwigModule_attributes,
     swig_SwigModule_constants,

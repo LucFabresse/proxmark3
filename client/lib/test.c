@@ -1,4 +1,4 @@
-#include "libpm3.h"
+#include "pm3.h"
 
 int main(int argc, char *argv[]) {
     mainlib_open();
