@@ -6,11 +6,8 @@
 #    /mingw64/bin/cmake -G"MSYS Makefiles" ..
 
 cmake_minimum_required(VERSION 3.10)
-
-# Root path into client
-set(PM3_ROOT ../../)
-
 project(proxmark3)
+SET (PM3_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../..)
 
 if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -45,9 +42,7 @@ pkg_search_module(BLUEZ QUIET bluez)
 pkg_search_module(PYTHON3 QUIET python3)
 pkg_search_module(PYTHON3EMBED QUIET python3-embed)
 
-SET (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
-add_subdirectory(../deps deps)
+add_subdirectory(${PM3_ROOT}/client/deps deps)
 
 set (TARGET_SOURCES
         ${PM3_ROOT}/client/src/proxmark3.c
@@ -185,14 +180,12 @@ set (TARGET_SOURCES
         ${PM3_ROOT}/client/src/wiegand_formats.c
         ${PM3_ROOT}/client/src/wiegand_formatutils.c
         ${CMAKE_BINARY_DIR}/version.c
-        ${PM3_ROOT}/client/src/libpm3_luawrap.c
-        ${PM3_ROOT}/client/src/libpm3_pywrap.c
         )
 
 add_custom_command(
     OUTPUT  ${CMAKE_BINARY_DIR}/version.c
-    COMMAND sh ${CMAKE_SOURCE_DIR}/../../tools/mkversion.sh > ${CMAKE_BINARY_DIR}/version.c || perl ${CMAKE_SOURCE_DIR}/../../tools/mkversion.pl > ${CMAKE_BINARY_DIR}/version.c || ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/../../common/default_version.c ${CMAKE_BINARY_DIR}/version.c
-    DEPENDS ${CMAKE_SOURCE_DIR}/../../common/default_version.c
+    COMMAND sh ${PM3_ROOT}/tools/mkversion.sh > ${CMAKE_BINARY_DIR}/version.c || perl ${PM3_ROOT}/tools/mkversion.pl > ${CMAKE_BINARY_DIR}/version.c || ${CMAKE_COMMAND} -E copy ${PM3_ROOT}/common/default_version.c ${CMAKE_BINARY_DIR}/version.c
+    DEPENDS ${PM3_ROOT}/common/default_version.c
 )
 
 set(ADDITIONAL_SRC "")
@@ -236,13 +229,13 @@ endif (BLUEZ_FOUND)
 
 if (PYTHON3EMBED_FOUND)
     message("Python3-embed library found, building with python3 support :)")
-    add_definitions(-DHAVE_PYTHON -DHAVE_PYTHON_SWIG)
+    add_definitions(-DHAVE_PYTHON)
     set(ADDITIONAL_DIRS ${PYTHON3EMBED_INCLUDE_DIRS} ${ADDITIONAL_DIRS})
     set(ADDITIONAL_LNK ${PYTHON3EMBED_LIBRARIES} ${ADDITIONAL_LNK})
     set(ADDITIONAL_LNKDIRS ${PYTHON3EMBED_LIBRARY_DIRS} ${ADDITIONAL_LNKDIRS})
 elseif (PYTHON3_FOUND)
     message("Python3 library found, building with python3 support :)")
-    add_definitions(-DHAVE_PYTHON -DHAVE_PYTHON_SWIG)
+    add_definitions(-DHAVE_PYTHON)
     set(ADDITIONAL_DIRS ${PYTHON3_INCLUDE_DIRS} ${ADDITIONAL_DIRS})
     set(ADDITIONAL_LNK ${PYTHON3_LIBRARIES} ${ADDITIONAL_LNK})
     set(ADDITIONAL_LNKDIRS ${PYTHON3_LIBRARY_DIRS} ${ADDITIONAL_LNKDIRS})   
@@ -255,7 +248,24 @@ add_executable(
 )
 
 target_compile_options(proxmark3 PUBLIC -Wall -Werror -O3)
-add_definitions(-DHAVE_LUA_SWIG)
+
+# Lua SWIG
+if (EXISTS ${PM3_ROOT}/client/src/libpm3_luawrap.c)
+    set (TARGET_SOURCES
+            ${PM3_ROOT}/client/src/libpm3_luawrap.c
+            ${TARGET_SOURCES})
+    add_definitions(-DHAVE_LUA_SWIG)
+endif (EXISTS ${PM3_ROOT}/client/src/libpm3_luawrap.c)
+
+# Python SWIG
+if (PYTHON3EMBED_FOUND OR PYTHON3_FOUND)
+    if (EXISTS ${PM3_ROOT}/client/src/libpm3_pywrap.c)
+        set (TARGET_SOURCES
+                ${PM3_ROOT}/client/src/libpm3_pywrap.c
+                ${TARGET_SOURCES})
+        add_definitions(-DHAVE_PYTHON_SWIG)
+    endif (EXISTS ${PM3_ROOT}/client/src/libpm3_pywrap.c)
+endif (PYTHON3EMBED_FOUND OR PYTHON3_FOUND)
 
 if (MINGW)
     # Mingw uses by default Microsoft printf, we want the GNU printf (e.g. for %z)
@@ -269,12 +279,11 @@ if (MINGW)
 endif (MINGW)
 
 target_include_directories(proxmark3 PRIVATE
-        ../../common
-        ../../common_fpga
-        ../../include
-        ../src
-        ../include
-        ../client_with_py
+        ${PM3_ROOT}/common
+        ${PM3_ROOT}/common_fpga
+        ${PM3_ROOT}/include
+        ${PM3_ROOT}/client/src
+        ${PM3_ROOT}/client/include
         ${ADDITIONAL_DIRS}
 )
 
@@ -319,9 +328,9 @@ if (PYTHON3EMBED_FOUND OR PYTHON3_FOUND)
            target_link_directories(proxmark3 PRIVATE ${ADDITIONAL_LNKDIRS})
     elseif (APPLE)
            message( SEND_ERROR "Your CMAKE version is too old for Apple platform, please update to a version >=3.13" )
-    endif()
-endif()
-    
+    endif (NOT CMAKE_VERSION VERSION_LESS 3.13)
+endif (PYTHON3EMBED_FOUND OR PYTHON3_FOUND)
+
 install(TARGETS proxmark3 DESTINATION "bin")
 install(DIRECTORY cmdscripts lualibs luascripts pyscripts resources dictionaries DESTINATION "share/proxmark3")
 
