@@ -50,8 +50,10 @@ const char *get_my_executable_path(void);
 const char *get_my_executable_directory(void);
 const char *get_my_user_directory(void);
 void main_loop(char *script_cmds_file, char *script_cmd, bool stayInCommandLoop);
-void mainlib_open(void);
-void mainlib_close(void);
+
+void pm3_open(void);
+void pm3_close(void);
+int pm3_console(char *Cmd);
 
 #ifdef __cplusplus
 }

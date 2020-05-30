@@ -2666,7 +2666,7 @@ static swig_module_info swig_module = {swig_types, 1, 0, 0, 0, 0};
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),(void**)(a)) 
 
 
-/* Includes the header in the wrapper code */
+/* Include the header in the wrapper code */
 #include "pm3.h"
 
 
@@ -2802,11 +2802,11 @@ SWIGINTERNINLINE PyObject*
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGINTERN PyObject *_wrap_mainlib_open(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_open(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   
-  if (!SWIG_Python_UnpackTuple(args, "mainlib_open", 0, 0, 0)) SWIG_fail;
-  mainlib_open();
+  if (!SWIG_Python_UnpackTuple(args, "open", 0, 0, 0)) SWIG_fail;
+  pm3_open();
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -2814,7 +2814,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CommandReceived(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_console(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   char *arg1 = (char *) 0 ;
   int res1 ;
@@ -2827,10 +2827,10 @@ SWIGINTERN PyObject *_wrap_CommandReceived(PyObject *SWIGUNUSEDPARM(self), PyObj
   swig_obj[0] = args;
   res1 = SWIG_AsCharPtrAndSize(swig_obj[0], &buf1, NULL, &alloc1);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CommandReceived" "', argument " "1"" of type '" "char *""'");
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "console" "', argument " "1"" of type '" "char *""'");
   }
   arg1 = (char *)(buf1);
-  result = (int)CommandReceived(arg1);
+  result = (int)pm3_console(arg1);
   resultobj = SWIG_From_int((int)(result));
   if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
   return resultobj;
@@ -2840,11 +2840,11 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_mainlib_close(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_close(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   
-  if (!SWIG_Python_UnpackTuple(args, "mainlib_close", 0, 0, 0)) SWIG_fail;
-  mainlib_close();
+  if (!SWIG_Python_UnpackTuple(args, "close", 0, 0, 0)) SWIG_fail;
+  pm3_close();
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -2854,9 +2854,9 @@ fail:
 
 static PyMethodDef SwigMethods[] = {
 	 { "SWIG_PyInstanceMethod_New", SWIG_PyInstanceMethod_New, METH_O, NULL},
-	 { "mainlib_open", _wrap_mainlib_open, METH_NOARGS, NULL},
-	 { "CommandReceived", _wrap_CommandReceived, METH_O, NULL},
-	 { "mainlib_close", _wrap_mainlib_close, METH_NOARGS, NULL},
+	 { "open", _wrap_open, METH_NOARGS, NULL},
+	 { "console", _wrap_console, METH_O, NULL},
+	 { "close", _wrap_close, METH_NOARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 

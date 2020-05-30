@@ -62,13 +62,13 @@ class _SwigNonDynamicMeta(type):
 
 
 
-def mainlib_open():
-    return _pm3.mainlib_open()
+def open():
+    return _pm3.open()
 
-def CommandReceived(cmd):
-    return _pm3.CommandReceived(cmd)
+def console(Cmd):
+    return _pm3.console(Cmd)
 
-def mainlib_close():
-    return _pm3.mainlib_close()
+def close():
+    return _pm3.close()
 
 

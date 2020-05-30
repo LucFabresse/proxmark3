@@ -687,7 +687,7 @@ static void init(void) {
 
 }
 
-void mainlib_open(void) {
+void pm3_open(void) {
 
     char portb[20];
     char *port = portb;
@@ -706,7 +706,7 @@ void mainlib_open(void) {
         PrintAndLogEx(INFO, "Running in " _YELLOW_("OFFLINE") " mode");
 }
 
-void mainlib_close(void) {
+void pm3_close(void) {
     // Clean up the port
     if (session.pm3_present) {
         clearCommandBuffer();
@@ -714,6 +714,10 @@ void mainlib_close(void) {
         msleep(100); // Make sure command is sent before killing client
         CloseProxmark();
     }
+}
+
+int pm3_console(char *Cmd) {
+    return CommandReceived(Cmd);
 }
 
 #ifndef LIBPM3

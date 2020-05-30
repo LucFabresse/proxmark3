@@ -2681,7 +2681,7 @@ static swig_module_info swig_module = {swig_types, 0, 0, 0, 0, 0};
 
 #define SWIG_LUACODE   luaopen_pm3_luacode
 
-/* Includes the header in the wrapper code */
+/* Include the header in the wrapper code */
 #include "pm3.h"
 
 
@@ -2695,11 +2695,11 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
 #ifdef __cplusplus
 extern "C" {
 #endif
-static int _wrap_mainlib_open(lua_State* L) {
+static int _wrap_open(lua_State* L) {
   int SWIG_arg = 0;
   
-  SWIG_check_num_args("mainlib_open",0,0)
-  mainlib_open();
+  SWIG_check_num_args("pm3_open",0,0)
+  pm3_open();
   
   return SWIG_arg;
   
@@ -2711,15 +2711,15 @@ fail:
 }
 
 
-static int _wrap_CommandReceived(lua_State* L) {
+static int _wrap_console(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
   int result;
   
-  SWIG_check_num_args("CommandReceived",1,1)
-  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("CommandReceived",1,"char *");
+  SWIG_check_num_args("pm3_console",1,1)
+  if(!SWIG_lua_isnilstring(L,1)) SWIG_fail_arg("pm3_console",1,"char *");
   arg1 = (char *)lua_tostring(L, 1);
-  result = (int)CommandReceived(arg1);
+  result = (int)pm3_console(arg1);
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
   
@@ -2731,11 +2731,11 @@ fail:
 }
 
 
-static int _wrap_mainlib_close(lua_State* L) {
+static int _wrap_close(lua_State* L) {
   int SWIG_arg = 0;
   
-  SWIG_check_num_args("mainlib_close",0,0)
-  mainlib_close();
+  SWIG_check_num_args("pm3_close",0,0)
+  pm3_close();
   
   return SWIG_arg;
   
@@ -2754,9 +2754,9 @@ static swig_lua_const_info swig_SwigModule_constants[]= {
     {0,0,0,0,0,0}
 };
 static swig_lua_method swig_SwigModule_methods[]= {
-    { "mainlib_open", _wrap_mainlib_open},
-    { "CommandReceived", _wrap_CommandReceived},
-    { "mainlib_close", _wrap_mainlib_close},
+    { "open", _wrap_open},
+    { "console", _wrap_console},
+    { "close", _wrap_close},
     {0,0}
 };
 static swig_lua_class* swig_SwigModule_classes[]= {
