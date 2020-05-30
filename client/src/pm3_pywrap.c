@@ -2634,8 +2634,9 @@ SWIGINTERN PyObject *SWIG_PyStaticMethod_New(PyObject *SWIGUNUSEDPARM(self), PyO
 /* -------- TYPES TABLE (BEGIN) -------- */
 
 #define SWIGTYPE_p_char swig_types[0]
-static swig_type_info *swig_types[2];
-static swig_module_info swig_module = {swig_types, 1, 0, 0, 0, 0};
+#define SWIGTYPE_p_pm3_device swig_types[1]
+static swig_type_info *swig_types[3];
+static swig_module_info swig_module = {swig_types, 2, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2809,6 +2810,7 @@ SWIGINTERN PyObject *_wrap_open(PyObject *SWIGUNUSEDPARM(self), PyObject *args) 
   char *buf1 = 0 ;
   int alloc1 = 0 ;
   PyObject *swig_obj[1] ;
+  pm3_device *result = 0 ;
   
   if (!args) SWIG_fail;
   swig_obj[0] = args;
@@ -2817,8 +2819,8 @@ SWIGINTERN PyObject *_wrap_open(PyObject *SWIGUNUSEDPARM(self), PyObject *args) 
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "open" "', argument " "1"" of type '" "char *""'");
   }
   arg1 = (char *)(buf1);
-  pm3_open(arg1);
-  resultobj = SWIG_Py_Void();
+  result = (pm3_device *)pm3_open(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_pm3_device, 0 |  0 );
   if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
   return resultobj;
 fail:
@@ -2829,36 +2831,66 @@ fail:
 
 SWIGINTERN PyObject *_wrap_console(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  char *arg1 = (char *) 0 ;
-  int res1 ;
-  char *buf1 = 0 ;
-  int alloc1 = 0 ;
-  PyObject *swig_obj[1] ;
+  pm3_device *arg1 = (pm3_device *) 0 ;
+  char *arg2 = (char *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  PyObject *swig_obj[2] ;
   int result;
   
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_AsCharPtrAndSize(swig_obj[0], &buf1, NULL, &alloc1);
+  if (!SWIG_Python_UnpackTuple(args, "console", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_pm3_device, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "console" "', argument " "1"" of type '" "char *""'");
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "console" "', argument " "1"" of type '" "pm3_device *""'"); 
   }
-  arg1 = (char *)(buf1);
-  result = (int)pm3_console(arg1);
+  arg1 = (pm3_device *)(argp1);
+  res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "console" "', argument " "2"" of type '" "char *""'");
+  }
+  arg2 = (char *)(buf2);
+  result = (int)pm3_console(arg1,arg2);
   resultobj = SWIG_From_int((int)(result));
-  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
   return resultobj;
 fail:
-  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
   return NULL;
 }
 
 
 SWIGINTERN PyObject *_wrap_close(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
+  pm3_device *arg1 = (pm3_device *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
   
-  if (!SWIG_Python_UnpackTuple(args, "close", 0, 0, 0)) SWIG_fail;
-  pm3_close();
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_pm3_device, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "close" "', argument " "1"" of type '" "pm3_device *""'"); 
+  }
+  arg1 = (pm3_device *)(argp1);
+  pm3_close(arg1);
   resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_get_current_dev(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  pm3_device *result = 0 ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "get_current_dev", 0, 0, 0)) SWIG_fail;
+  result = (pm3_device *)pm3_get_current_dev();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_pm3_device, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -2868,8 +2900,9 @@ fail:
 static PyMethodDef SwigMethods[] = {
 	 { "SWIG_PyInstanceMethod_New", SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { "open", _wrap_open, METH_O, NULL},
-	 { "console", _wrap_console, METH_O, NULL},
-	 { "close", _wrap_close, METH_NOARGS, NULL},
+	 { "console", _wrap_console, METH_VARARGS, NULL},
+	 { "close", _wrap_close, METH_O, NULL},
+	 { "get_current_dev", _wrap_get_current_dev, METH_NOARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -2881,15 +2914,19 @@ static PyMethodDef SwigMethods_proxydocs[] = {
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_pm3_device = {"_p_pm3_device", "struct pm3_device *|pm3_device *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_char,
+  &_swigt__p_pm3_device,
 };
 
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_pm3_device[] = {  {&_swigt__p_pm3_device, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_char,
+  _swigc__p_pm3_device,
 };
 
 

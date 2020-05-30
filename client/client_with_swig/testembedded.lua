@@ -1,2 +1,3 @@
 local pm3 = require("pm3")
-pm3.console("hw status")
+p=pm3.get_current_dev()
+pm3.console(p, "hw status")

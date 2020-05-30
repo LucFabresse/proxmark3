@@ -559,7 +559,7 @@ static int flash_pm3(char *serial_port_name, uint8_t num_files, char *filenames[
         PrintAndLogEx(SUCCESS, "   "_YELLOW_("%s"), filepaths[i]);
     }
 
-    if (OpenProxmark(serial_port_name, true, 60, true, FLASHMODE_SPEED)) {
+    if (OpenProxmark(session.current_device, serial_port_name, true, 60, true, FLASHMODE_SPEED)) {
         PrintAndLogEx(NORMAL, _GREEN_(" found"));
     } else {
         PrintAndLogEx(ERR, "Could not find Proxmark3 on " _RED_("%s") ".\n", serial_port_name);
@@ -687,9 +687,13 @@ static void init(void) {
 
 }
 
-void pm3_open(char *port) {
+
+/* ======================================================= */
+/* user API */
+
+pm3_device* pm3_open(char *port) {
     init();
-    OpenProxmark(port, false, 20, false, USART_BAUD_RATE);
+    OpenProxmark(session.current_device, port, false, 20, false, USART_BAUD_RATE);
     if (session.pm3_present && (TestProxmark() != PM3_SUCCESS)) {
         PrintAndLogEx(ERR, _RED_("ERROR:") " cannot communicate with the Proxmark\n");
         CloseProxmark();
@@ -700,9 +704,13 @@ void pm3_open(char *port) {
 
     if (!session.pm3_present)
         PrintAndLogEx(INFO, "Running in " _YELLOW_("OFFLINE") " mode");
+    // For now, there is no real device context:
+    return session.current_device;
 }
 
-void pm3_close(void) {
+void pm3_close(pm3_device* dev) {
+    // For now, there is no real device context:
+    (void) dev;
     // Clean up the port
     if (session.pm3_present) {
         clearCommandBuffer();
@@ -712,9 +720,16 @@ void pm3_close(void) {
     }
 }
 
-int pm3_console(char *Cmd) {
+int pm3_console(pm3_device* dev, char *Cmd) {
+    // For now, there is no real device context:
+    (void) dev;
     return CommandReceived(Cmd);
 }
+
+pm3_device* pm3_get_current_dev(void) {
+    return session.current_device;
+}
+/* ======================================================= */
 
 #ifndef LIBPM3
 int main(int argc, char *argv[]) {
@@ -1012,7 +1027,7 @@ int main(int argc, char *argv[]) {
 
     // try to open USB connection to Proxmark
     if (port != NULL) {
-        OpenProxmark(port, waitCOMPort, 20, false, speed);
+        OpenProxmark(session.current_device, port, waitCOMPort, 20, false, speed);
     }
 
     if (session.pm3_present && (TestProxmark() != PM3_SUCCESS)) {
