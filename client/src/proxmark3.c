@@ -110,6 +110,7 @@ static void showBanner(void) {
     fflush(stdout);
     g_printAndLog = PRINTANDLOG_PRINT | PRINTANDLOG_LOG;
 }
+#endif
 
 static const char *prompt_dev = "";
 static const char *prompt_ctx = "";
@@ -376,6 +377,7 @@ check_script:
     }
 }
 
+#ifndef LIBPM3
 static void dumpAllHelp(int markdown) {
     session.help_dump_mode = true;
     PrintAndLogEx(NORMAL, "\n%sProxmark3 command dump%s\n\n", markdown ? "# " : "", markdown ? "" : "\n======================");

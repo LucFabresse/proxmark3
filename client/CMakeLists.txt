@@ -45,7 +45,6 @@ pkg_search_module(PYTHON3EMBED QUIET python3-embed)
 add_subdirectory(${PM3_ROOT}/client/deps deps)
 
 set (TARGET_SOURCES
-        ${PM3_ROOT}/client/src/proxmark3.c
         ${PM3_ROOT}/common/commonutil.c
         ${PM3_ROOT}/common/util_posix.c
         ${PM3_ROOT}/common/parity.c
@@ -241,8 +240,8 @@ elseif (PYTHON3_FOUND)
     set(ADDITIONAL_LNKDIRS ${PYTHON3_LIBRARY_DIRS} ${ADDITIONAL_LNKDIRS})   
 endif (PYTHON3EMBED_FOUND)
 
-add_executable(
-        proxmark3
+add_executable(proxmark3
+        ${PM3_ROOT}/client/src/proxmark3.c
         ${TARGET_SOURCES}
         ${ADDITIONAL_SRC}
 )

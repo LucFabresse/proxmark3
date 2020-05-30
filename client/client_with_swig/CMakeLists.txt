@@ -45,7 +45,6 @@ pkg_search_module(PYTHON3EMBED QUIET python3-embed)
 add_subdirectory(${PM3_ROOT}/client/deps deps)
 
 set (TARGET_SOURCES
-        ${PM3_ROOT}/client/src/proxmark3.c
         ${PM3_ROOT}/common/commonutil.c
         ${PM3_ROOT}/common/util_posix.c
         ${PM3_ROOT}/common/parity.c
@@ -241,14 +240,6 @@ elseif (PYTHON3_FOUND)
     set(ADDITIONAL_LNKDIRS ${PYTHON3_LIBRARY_DIRS} ${ADDITIONAL_LNKDIRS})   
 endif (PYTHON3EMBED_FOUND)
 
-add_executable(
-        proxmark3
-        ${TARGET_SOURCES}
-        ${ADDITIONAL_SRC}
-)
-
-target_compile_options(proxmark3 PUBLIC -Wall -Werror -O3)
-
 # Lua SWIG
 if (EXISTS ${PM3_ROOT}/client/src/libpm3_luawrap.c)
     set (TARGET_SOURCES
@@ -266,6 +257,14 @@ if (PYTHON3EMBED_FOUND OR PYTHON3_FOUND)
         add_definitions(-DHAVE_PYTHON_SWIG)
     endif (EXISTS ${PM3_ROOT}/client/src/libpm3_pywrap.c)
 endif (PYTHON3EMBED_FOUND OR PYTHON3_FOUND)
+
+add_executable(proxmark3
+        ${PM3_ROOT}/client/src/proxmark3.c
+        ${TARGET_SOURCES}
+        ${ADDITIONAL_SRC}
+)
+
+target_compile_options(proxmark3 PUBLIC -Wall -Werror -O3)
 
 if (MINGW)
     # Mingw uses by default Microsoft printf, we want the GNU printf (e.g. for %z)
