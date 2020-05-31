@@ -2,8 +2,8 @@
 
 # Usage: run option -h to get help
 
-# PM3PATH=$(dirname "$0")
-PM3PATH="/home/luc/Prog/NFC/proxmark3RRG.git"
+PM3PATH="$(dirname "$(readlink -f "$0")")"
+
 FULLIMAGE="fullimage.elf"
 BOOTIMAGE="bootrom.elf"
 # try pm3 dirs in current repo workdir
