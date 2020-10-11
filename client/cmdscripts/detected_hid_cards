@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cat ~/.proxmark3/* | grep TAG\ ID | uniq | grep TAG\ ID
+
