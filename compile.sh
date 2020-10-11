@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-make SKIPQT=1
+make SKIPQT=1 $@
 
