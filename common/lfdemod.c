@@ -51,6 +51,7 @@
 
 #ifndef ON_DEVICE
 #include "ui.h"
+#include "util.h"
 # include "cmddata.h"
 # define prnt(args...) PrintAndLogEx(DEBUG, ## args );
 #else
@@ -206,7 +207,7 @@ void getHiLo(int *high, int *low, uint8_t fuzzHi, uint8_t fuzzLo) {
         *low =  signalprop.low;
     }
 
-   // prnt("getHiLo fuzzed: High %d | Low %d", *high, *low);
+    // prnt("getHiLo fuzzed: High %d | Low %d", *high, *low);
 }
 
 // by marshmellow
@@ -1536,6 +1537,11 @@ static uint16_t cleanAskRawDemod(uint8_t *bits, size_t *size, int clk, int inver
     getNextHigh(bits, *size, high, &pos);
 //    getNextLow(bits, *size, low, &pos);
 
+    // do not skip first transition
+    if ((pos > cl_2 - cl_4 - 1) && (pos <= clk + cl_4 + 1)) {
+        bits[bitCnt++] = invert ^ 1;
+    }
+
     // sample counts,   like clock = 32.. it tries to find  32/4 = 8,  32/2 = 16
     for (size_t i = pos; i < *size; i++) {
         if (bits[i] >= high && waveHigh) {
@@ -1560,7 +1566,7 @@ static uint16_t cleanAskRawDemod(uint8_t *bits, size_t *size, int clk, int inver
                     } else if (waveHigh) {
                         bits[bitCnt++] = invert;
                         bits[bitCnt++] = invert;
-                    } else if (!waveHigh) {
+                    } else {
                         bits[bitCnt++] = invert ^ 1;
                         bits[bitCnt++] = invert ^ 1;
                     }
@@ -1582,9 +1588,10 @@ static uint16_t cleanAskRawDemod(uint8_t *bits, size_t *size, int clk, int inver
 
                     if (waveHigh) {
                         bits[bitCnt++] = invert;
-                    } else if (!waveHigh) {
+                    } else {
                         bits[bitCnt++] = invert ^ 1;
                     }
+
                     if (*startIdx == 0) {
                         *startIdx = i - cl_2;
                         if (g_debugMode == 2) prnt("DEBUG ASK: cleanAskRawDemod minus half clock [%d]", *startIdx);
@@ -1656,6 +1663,7 @@ int askdemod_ext(uint8_t *bits, size_t *size, int *clk, int *invert, int maxErr,
         return errCnt;
     }
 
+    *startIdx = start - (*clk / 2);
     if (g_debugMode == 2) prnt("DEBUG: (askdemod_ext) Weak wave detected: startIdx %i", *startIdx);
 
     int lastBit;  //set first clock check - can go negative
@@ -2158,26 +2166,6 @@ int HIDdemodFSK(uint8_t *dest, size_t *size, uint32_t *hi2, uint32_t *hi, uint32
         else // 0 1
             *lo |= 0;
     }
-    return (int)start_idx;
-}
-
-// Find IDTEC PSK1, RF  Preamble == 0x4944544B, Demodsize 64bits
-// by iceman
-int detectIdteck(uint8_t *dest, size_t *size) {
-    //make sure buffer has data
-    if (*size < 64 * 2) return -1;
-
-    if (signalprop.isnoise) return -2;
-
-    size_t start_idx = 0;
-    uint8_t preamble[] = {0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1};
-
-    //preamble not found
-    if (!preambleSearch(dest, preamble, sizeof(preamble), size, &start_idx))
-        return -3;
-
-    // wrong demoded size
-    if (*size != 64) return -4;
     return (int)start_idx;
 }
 
